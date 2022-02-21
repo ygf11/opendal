@@ -13,6 +13,7 @@
 // limitations under the License.
 
 use std::borrow::Cow;
+use std::fmt::Debug;
 use std::pin::Pin;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -342,7 +343,7 @@ fn parse_get_object_error(err: SdkError<GetObjectError>, path: &str) -> Error {
             _ => Error::Unexpected(path.to_string()),
         }
     } else {
-        Error::Unexpected(path.to_string())
+        Error::Unexpected(err.to_string())
     }
 }
 
@@ -353,11 +354,11 @@ fn parse_head_object_error(err: SdkError<HeadObjectError>, path: &str) -> Error 
             _ => Error::Unexpected(path.to_string()),
         }
     } else {
-        Error::Unexpected(path.to_string())
+        Error::Unexpected(err.to_string())
     }
 }
 
 // parse_unexpect_error is used to parse SdkError into unexpected.
-fn parse_unexpect_error<E>(_: SdkError<E>, path: &str) -> Error {
-    Error::Unexpected(path.to_string())
+fn parse_unexpect_error<E: Debug>(err: SdkError<E>, _path: &str) -> Error {
+    Error::Unexpected(format!("{:?}", err))
 }

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 use criterion::{BenchmarkId, Criterion};
+use futures::io;
 use futures::io::BufReader;
 use futures::io::Cursor;
-use futures::{io, AsyncSeekExt};
 use rand::prelude::*;
 
 use opendal::readers::SeekableReader;
